@@ -6,29 +6,32 @@ const add = require("../add");
 const router = new Router();
 
 router.get("/sum/:number1/:number2", (req, res) => {
-  const {number1, number2} = req.params;
-  if(number1 == null || number2 == null) {
+  const { number1, number2 } = req.params;
+  if (number1 == null || number2 == null) {
     res.status(400).send("Not provided numbers");
     return;
   }
-  if(isNaN(parseInt(number1)) || isNaN(parseInt(number2))) {
+  if (isNaN(parseInt(number1)) || isNaN(parseInt(number2))) {
     res.status(400).send("Numbers needs to be integer");
     return;
   }
-  const result = add(favouriteNumber.favouriteNumber, add(parseInt(number1), parseInt(number2)));
+  const result = add(
+    favouriteNumber.favouriteNumber,
+    add(parseInt(number1), parseInt(number2))
+  );
   res.json({
     status: "success",
     result: result,
-  }); 
+  });
 });
 
 router.post("/favNumber", (req, res) => {
-  const {number} = req.body;
-  if(number == null ) {
+  const { number } = req.body;
+  if (number == null) {
     res.status(400).send("Not provided number");
     return;
-  } 
-  if(isNaN(parseInt(number))) {
+  }
+  if (isNaN(parseInt(number))) {
     res.status(400).send("The number needs to be integer");
     return;
   }
@@ -41,10 +44,16 @@ router.post("/favNumber", (req, res) => {
 });
 
 router.delete("/favNumber", (req, res) => {
-  favouriteNumber.favouriteNumber = 0; 
+  favouriteNumber.favouriteNumber = 0;
   save(favouriteNumber);
   res.json({
-    status: "success"
+    status: "success",
+  });
+});
+
+router.get("/", (req, res) => {
+  res.json({
+    status: "Hello World",
   });
 });
 
