@@ -53,7 +53,7 @@ router.delete("/favNumber", (req, res) => {
 
 router.get("/", (req, res) => {
   res.json({
-    status: "Hello World",
+    status: "Hello Marius",
   });
 });
 
