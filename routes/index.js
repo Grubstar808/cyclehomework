@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { save } = require("../save_json");
+const { save, save2 } = require("../save_json");
 let favouriteNumber = require("../number.json");
 const add = require("../add");
 const AWS = require("aws-sdk");
@@ -50,6 +50,36 @@ router.post("/favNumber", async (req, res) => {
   res.json({
     status: "success",
     newFavouriteNumber: number,
+  });
+});
+
+router.post("/newContent", async (req, res) => {
+  const { content } = req.body;
+  if (typeof content !== "string") {
+    res.status(400).send("please input string");
+    return;
+  }
+  await save2({
+    Content: content,
+  });
+  res.json({
+    status: "success",
+    newContent: content,
+  });
+});
+
+router.get("/", async (req, res) => {
+  let response = await s3
+    .getObject({
+      Bucket: "cyclic-misty-gray-fez-us-east-2",
+      Key: "content.json",
+    })
+    .promise();
+
+  let content = JSON.parse(response.Body.toString("utf-8"));
+  res.json({
+    status: "success",
+    result: content,
   });
 });
 
